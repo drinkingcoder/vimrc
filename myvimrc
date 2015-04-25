@@ -1,0 +1,178 @@
+set ts=4
+set nu
+syntax on
+set smartindent
+set cindent shiftwidth=4
+set autoread					"auto read when edited
+set cursorline
+set ruler
+set hls
+set laststatus=2				"two status lines showl
+set statusline=\ %<%F[%1*%M%*%n%R%H]%=\ %y\ %0(%{&fileformat}\ %{&encoding}\ %c:%l/%L%)\ 
+set incsearch					"show results when writing
+set nowrapscan					"don't continue when touch the top or bottom
+set magic						"don't clear...
+"set backspace=indent,start,eol
+set backspace=indent
+"set tags=tags;
+"set autochdir
+set t_Co=256
+
+:colorscheme mycolor    
+let g:neocomplcache_enable_at_startup = 1 "插件自动启动
+"如果所选行的行首没有//，则给所选行行首加上注释符//（/a：/ add）  
+map /a :s/^\([^\/\/]\s*\)/\/\/\1/<CR> 
+"如果所选行行首有//，则将所选行行首的//都去掉（/d：/ delete）  
+map /d :s/^\/\/\(\s*\)/\1/<CR>  
+
+"关于tab的快捷键
+map tn :tabnext<cr>
+map tp :tabprevious<cr>
+map td :tabnew .<cr>
+map te :tabedit
+map tc :tabclose<cr>
+":set showmatch					"match code
+map <C-c> :!g++ % 2>error<cr>
+map	<C-e> :vsplit error<cr>
+map <C-p> :!./a.out<cr>
+								"compile and open eroor
+let NERDCompactSexyComs=1		" 多行注释时样子更好看
+set ignorecase smartcase " 搜索时忽略大小写，但在有一个或以上大写字母时仍保持对大小写敏感
+"conf for tabs
+
+let mapleader = ','
+"nnoremap <C-l> gt
+"nnoremap <C-h> gT
+"nnoremap <leader>t : tabe<CR>
+nnoremap <space> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
+" 用空格键来开关折叠
+set foldenable
+set foldmethod=syntax
+
+
+"--------------------------------Bundle_Configuration----------------------
+"set nocompatible                " be iMproved
+"filetype off                    " required!
+"set rtp+=~/.vim/bundle/vundle/
+"call vundle#rc()
+
+	" let Vundle manage Vundle
+"	Bundle 'gmarik/vundle'
+
+	"my Bundle here:
+	"
+	" original repos on github
+"	Bundle 'kien/ctrlp.vim'
+"	Bundle 'sukima/xmledit'
+"	Bundle 'sjl/gundo.vim'
+"	Bundle 'jiangmiao/auto-pairs'
+"	Bundle 'jiangmiao/auto-pairs'
+"	Bundle 'klen/python-mode'
+"	Bundle 'klen/python-mode'
+"	Bundle 'Valloric/ListToggle'
+"	Bundle 'SirVer/ultisnips'
+"	Bundle 'Valloric/YouCompleteMe'
+"	Bundle 'scrooloose/syntastic'
+"	Bundle 't9md/vim-quickhl'
+"	Bundle 'Lokaltog/vim-powerline'
+"	Bundle 'scrooloose/nerdcommenter'
+	"..................................
+	" vim-scripts repos
+"	Bundle 'YankRing.vim'
+"	Bundle 'vcscommand.vim'
+"	Bundle 'ShowPairs'
+"	Bundle 'SudoEdit.vim'
+"	Bundle 'EasyGrep'
+"	Bundle 'VOoM'
+"	Bundle 'VimIM'
+	"..................................
+	" non github repos
+	" Bundle 'git://git.wincent.com/command-t.git'
+	"......................................
+"	filetype plugin indent on
+
+"张晗  14:17:07
+"Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
+" Disable AutoComplPop.
+let g:acp_enableAtStartup = 0
+" Use neocomplete.
+let g:neocomplete#enable_at_startup = 1
+" Use smartcase.
+let g:neocomplete#enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+
+" Define dictionary.
+let g:neocomplete#sources#dictionary#dictionaries = {
+	    \ 'default' : '',
+		    \ 'vimshell' : $HOME.'/.vimshell_hist',
+			    \ 'scheme' : $HOME.'/.gosh_completions'
+					        \ }
+
+							" Define keyword.
+							if !exists('g:neocomplete#keyword_patterns')
+							    let g:neocomplete#keyword_patterns = {}
+								endif
+								let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+								" Plugin key-mappings.
+								inoremap <expr><C-g>     neocomplete#undo_completion()
+	inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+	" Recommended key-mappings.
+	" <CR>: close popup and save indent.
+	inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+	function! s:my_cr_function()
+	  return neocomplete#close_popup() . "\<CR>"
+	    " For no inserting <CR> key.
+		  "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+		  endfunction
+		  " <TAB>: completion.
+		  inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+		  " <C-h>, <BS>: close popup and delete backword char.
+		  inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+		  inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+		  inoremap <expr><C-y>  neocomplete#close_popup()
+	inoremap <expr><C-e>  neocomplete#cancel_popup()
+	" Close popup by <Space>.
+	"inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
+
+	" For cursor moving in insert mode(Not recommended)
+	"inoremap <expr><Left>  neocomplete#close_popup() . "\<Left>"
+	"inoremap <expr><Right> neocomplete#close_popup() . "\<Right>"
+	"inoremap <expr><Up>    neocomplete#close_popup() . "\<Up>"
+	"inoremap <expr><Down>  neocomplete#close_popup() . "\<Down>"
+	" Or set this.
+	"let g:neocomplete#enable_cursor_hold_i = 1
+	" Or set this.
+	"let g:neocomplete#enable_insert_char_pre = 1
+
+	" AutoComplPop like behavior.
+	"let g:neocomplete#enable_auto_select = 1
+
+	" Shell like behavior(not recommended).
+	"set completeopt+=longest
+	"let g:neocomplete#enable_auto_select = 1
+	"let g:neocomplete#disable_auto_complete = 1
+	"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
+
+	" Enable omni completion.
+	autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+	autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+	autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+	autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+	autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+	" Enable heavy omni completion.
+	if !exists('g:neocomplete#sources#omni#input_patterns')
+	  let g:neocomplete#sources#omni#input_patterns = {}
+	  endif
+	  "let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+	  "let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+	  "let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+
+	  " For perlomni.vim setting.
+	  " https://github.com/c9s/perlomni.vim
+	  let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+
